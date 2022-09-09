@@ -7,13 +7,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] float speed = 1.5f;
     [SerializeField] float gravity = -9.81f;
-    [SerializeField] float groundDistance = 0.4f;
+    
     public LayerMask groundMask;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] float jumpHeight = 3f;
     [SerializeField] float walkSpeed = 1.5f;
     [SerializeField] float runSpeed = 8f;
-    private bool isWalking = true;
+    [SerializeField] private AudioSource JumpGrunt;
+    private bool isWalking;
 
 
     Vector3 velocity;
@@ -27,9 +28,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            
             Jump();
+            JumpGrunt.Play();
+
         }
 
         isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
@@ -56,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKey(KeyCode.LeftShift))
         {
             if(isWalking)
             {

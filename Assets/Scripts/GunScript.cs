@@ -23,18 +23,20 @@ public class GunScript : MonoBehaviour
     [SerializeField] int magazineSize = 120;
     private bool isShooting;
 
+    
+
     private void Start()
     {
         currentAmmo = maxAmmo;
 
-        
+
     }
 
     private void Update()
     {
-        if(currentAmmo ==0 && magazineSize ==0)
+        if (currentAmmo == 0 && magazineSize == 0)
         {
-            animator.SetBool("isShooting",false);
+            animator.SetBool("isShooting", false);
             return;
         }
         if (isReloading)
@@ -46,22 +48,22 @@ public class GunScript : MonoBehaviour
             StartCoroutine(Reload());
             return;
         }
-        
+
         if (Input.GetButtonDown("Fire1"))
         {
             Shoot();
             ShootSound.Play();
 
-            if(currentAmmo == -1 && !isReloading)
+            if (currentAmmo > 0)
             {
                 StartCoroutine(Reload());
             }
-            
+
         }
 
         IEnumerator Reload()
         {
-            
+
             GunReload.Play();
             isReloading = true;
             Debug.Log("Reloading...");
@@ -69,9 +71,9 @@ public class GunScript : MonoBehaviour
             yield return new WaitForSeconds(reloadTime - .25f);
             animator.SetBool("Reloading", false);
             yield return new WaitForSeconds(.25f);
-            
 
-            if(magazineSize >= maxAmmo)
+
+            if (magazineSize >= maxAmmo)
             {
                 currentAmmo = maxAmmo;
                 magazineSize -= maxAmmo;
@@ -88,16 +90,17 @@ public class GunScript : MonoBehaviour
         {
             muzzleFlash.Play();
             currentAmmo--;
-            
 
-            RaycastHit hit;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
-            {
-                Debug.Log(hit.transform.name);
-            }
-            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+           
+                    RaycastHit hit;
+                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+                    {
+                        Debug.Log(hit.transform.name);
+                    }
+                    Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
 
-            
+                }
         }
-    }
+            
 }
+        
