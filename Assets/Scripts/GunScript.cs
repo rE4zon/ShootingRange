@@ -54,7 +54,7 @@ public class GunScript : MonoBehaviour
             Shoot();
             ShootSound.Play();
 
-            if (currentAmmo > 0)
+            if (currentAmmo < 0)
             {
                 StartCoroutine(Reload());
             }
@@ -96,6 +96,11 @@ public class GunScript : MonoBehaviour
                     if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
                     {
                         Debug.Log(hit.transform.name);
+                        Target target = hit.transform.GetComponent<Target>();
+                        if(target != null)
+                         {
+                            target.TakeDamage(damage);
+                         }
                     }
                     Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
 
