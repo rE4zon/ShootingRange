@@ -1,20 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HealthPlayer : MonoBehaviour
 {
-    public int Health;
-    [SerializeField] Slider slider;
+    [SerializeField] TextMeshProUGUI playerHPText;
+    
+    [SerializeField] static int playerHP = 100;
+    public static bool isGameOver;
+    
     void Start()
     {
-        
+        isGameOver = false;
     }
 
     
     void Update()
     {
-        slider.value = Health;
+        
+        playerHPText.text = "+" + playerHP;
+        if (isGameOver)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
+    }
+    public static void TakeDamage(int damageAmount)
+    {
+        playerHP -= damageAmount;
+        if (playerHP <= 0)
+            isGameOver = true;
     }
 }

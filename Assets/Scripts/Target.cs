@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Target : MonoBehaviour
 {
-    [SerializeField] float health = 50f;
+    public Animator animator;
+    [SerializeField] float health = 100f;
     [SerializeField] float maxHealth;
     [SerializeField] GameObject healthBarUI;
     [SerializeField] Slider slider;
@@ -32,8 +33,11 @@ public class Target : MonoBehaviour
         {
             if (health <=0f)
             {
-                Destroy(gameObject);
+                animator.SetTrigger("death");
+                GetComponent<CapsuleCollider>().enabled = false;
             }
         }
+
+        
     }
 }
